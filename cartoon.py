@@ -22,7 +22,7 @@ def color_quantisation(img, k):
     result=result.reshape(img.shape)
     return result
 
-img=read_img('./guddu.jpg')
+img=read_img('')
 line_wdt=25
 blur_value=7
 totalColors=5
@@ -31,5 +31,4 @@ edgeImg=edge_detection(img,line_wdt,blur_value)
 img=color_quantisation(img,totalColors)
 blurred=cv2.bilateralFilter(img, d=7,sigmaColor=200,sigmaSpace=200)
 cartoon=cv2.bitwise_and(blurred,blurred,mask=edgeImg)
-cv2.imwrite('gs.jpg', cartoon)
-#cv2.imwrite('g.jpg', edgeImg)
+cv2.imwrite('', cartoon)
