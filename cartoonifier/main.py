@@ -3,6 +3,8 @@ from cv2 import medianBlur
 from cv2 import imwrite
 import numpy as np
 import PySimpleGUI as sg
+from PIL import Image
+import os
 
 # Image Processing using CV
 
@@ -10,7 +12,8 @@ import PySimpleGUI as sg
 def read_img(filename):
     img = cv2.imread(filename)
     return img
-
+def cleanup():
+    os.remove("cartoon.png")
 # Edge Detections
 def edge_detection(img, line_wdt, blur):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -61,16 +64,8 @@ layout = [[sg.Text('W E L C O M  E - T O - C A R T O O N I F I E R', font=('Aria
           [sg.Text('_'*60)],
           [sg.Button('Ok', font=('Arial Bold', 12)), sg.Button('Cancel', font=('Arial Bold', 12))]]
 
-layout2 = [[sg.Text(text='Python GUIs for Humans',
-   font=('Arial Bold', 16),
-   size=20, expand_x=True,
-   justification='center')],
-   [sg.Image('./messi.jpeg',
-   expand_x=True, expand_y=True )]
-]
-
 # Create the Window
-window = sg.Window('Cartoonifier', layout, element_justification='c')
+window = sg.Window('Cartoonifier', layout, element_justification='c', size=(600, 400))
 
 
 # Event Loop to process "events" and get the "values" of the inputs
@@ -103,7 +98,12 @@ while True:
 
     # Creating Output
     if event == 'Ok':
-        cv2.imwrite('cartoon.jpeg', cartoon)
+        cv2.imwrite('cartoon.png', cartoon)
+        image = Image.open('cartoon.png')
+        new_image = image.resize((600, 400))
+        new_image.save('cartoon.png')
+        sg.popup_no_buttons('Image', title='Display image', keep_on_top=True, image='cartoon.png')
+        cleanup()
         window.close()
 
 window.close()
